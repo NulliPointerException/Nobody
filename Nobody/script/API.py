@@ -1,5 +1,5 @@
 #!/bin/python3
-
+#import
 from gtts import gTTS
 from playsound import playsound
 import os, json, functions, pyaudio
