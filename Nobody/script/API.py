@@ -1,8 +1,8 @@
 #!/bin/python3
-#import
+# import
 from gtts import gTTS
 from playsound import playsound
-import os, json, functions, pyaudio
+import os, json, functions
 import speech_recognition as sr
 import threading
 from array import array
@@ -10,8 +10,8 @@ from queue import Queue, Full
 from datetime import datetime
 import pyaudio
 import wave
-#utils
-#say
+# utils
+# say
 def say(txt, lang = "conf"):
     if not lang=="conf":
         tts = gTTS(text=txt, lang=lang, slow=False)
@@ -25,22 +25,21 @@ def say(txt, lang = "conf"):
     playsound("TTS.mp3")
     os.remove("TTS.mp3")
 
-#get_conf
+# get_conf
 def get_conf():
     with open("config.json", "r") as f:
         config = json.load(f)
     return config
 
-#get_lang
+# get_lang
 def get_lang():
     conf = get_conf()
     return conf["usr"]["lang"]
 
-#trigert
-
+# trigert
 def trigert():
     # 110% of the recording code written by Whitespace (https://github.com/Whitespace-code)
-    #rec
+    # rec
     TOLERANCE = 1  # seconds
     MAX_TIME = 10  # seconds
     CHUNK_SIZE = 1024
@@ -140,15 +139,14 @@ def trigert():
             except Full:
                 pass  # discard
     get_user_input()
-
     print("stop-rec")
-    sr
+    # Speech to text
     f_name="user_input.wav"
     se=sr.Recognizer()
     with sr.AudioFile(f_name) as f:
         data = se.record(f)
         text = se.recognize_google(data, language="de-DE", )
         print(text)
+        os.remove("user_input.wav")
         # do
         functions.get_action(text)
-        os.remove("user_input.wav")

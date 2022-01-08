@@ -1,20 +1,18 @@
 #!/bin/python3
-#import
-
+# import
 from API import *
 from functions import *
-#def
-#start
-#load config
+# start
+# load config
 conf=get_conf()
-#if first start
+# First start
 if not conf["nobody"]["set-up"]:
     say("hi my name is Nobody and you haven't set me up yet.", "en")
     say("whats your name?", "en")
-    #xxxx
+    # xxxx
     conf["usr"]["name"] = input(": ")
     say("what is your favorite language", "en")
-    #xxxx
+    # xxxx
     conf["usr"]["lang"] = input(": ")
     conf["nobody"]["set-up"]=True
     say("set up completed.", "en")
@@ -23,5 +21,5 @@ if not conf["nobody"]["set-up"]:
     f.flush()
     f.close()
     print("set-up completed")
-#do
+# do
 trigert()
