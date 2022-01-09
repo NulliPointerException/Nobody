@@ -1,8 +1,8 @@
 #!/bin/python3
-#import
+# import
 from gtts import gTTS
 from playsound import playsound
-import os, json
+import os, json, do
 import speech_recognition as sr
 import threading
 from array import array
@@ -10,8 +10,8 @@ from queue import Queue, Full
 from datetime import datetime
 import pyaudio
 import wave
-#utils
-#say
+# utils
+# say
 def say(txt, lang = "conf"):
     if not lang=="conf":
         tts = gTTS(text=txt, lang=lang, slow=False)
@@ -25,32 +25,32 @@ def say(txt, lang = "conf"):
     playsound("TTS.mp3")
     os.remove("TTS.mp3")
 
-#get_conf
+# get_conf
 def get_conf():
     with open("config.json", "r") as f:
         config = json.load(f)
     return config
 
-#get_lang
+# get_lang
 def get_lang():
     conf = get_conf()
     return conf["usr"]["lang"]
 
-#trigert
+# input processing
+def input_processing():
+    do.get_action(stt())
 
-def trigert():
-    # 110% of the recording code written by Whitespace (https://github.com/Whitespace-code)
-    #rec
+# STT
+def stt():
+    # most of the recording code written by Whitespace (https://github.com/Whitespace-code)
     TOLERANCE = 1  # seconds
     MAX_TIME = 10  # seconds
     CHUNK_SIZE = 1024
     MIN_VOLUME = 1000
     # if the recording thread can't consume fast enough, the listener will start discarding
     BUF_MAX_SIZE = CHUNK_SIZE * 10
-
     RATE = 44100
     CHANNEL_COUNT = 2
-    BITRATE = 44100
     FORMAT = pyaudio.paInt16
 
     def save_chunks(chunks):
@@ -66,7 +66,6 @@ def trigert():
         p = pyaudio.PyAudio()
         stopped = threading.Event()
         q = Queue(maxsize=int(round(BUF_MAX_SIZE / CHUNK_SIZE)))
-
         record_t = threading.Thread(daemon=True, target=record, args=(stopped, q))
         record_t.start()  # Records and sends microphone data in chunks to other thread
         analyze_t = threading.Thread(target=analyze, args=(stopped, q))
@@ -79,7 +78,6 @@ def trigert():
                     break
         except KeyboardInterrupt:
             stopped.set()
-
         record_t.join()
         analyze_t.join()
 
@@ -105,13 +103,13 @@ def trigert():
                     temp_chunks.clear()
                     print("Detected; Started recording...")
                 else:  # Continue Recording
-                    print("recording...")
                     chunks.append(chunk)
                     if (datetime.now() - start_time).total_seconds() >= MAX_TIME:
                         save_chunks(chunks)
                         temp_chunks.clear()
                         print("Max time exceeded; stopped recording")
                         running = False
+
             else:
                 if recording:  # If not recording, don't do anything
                     if (datetime.now() - silent_timestamp).total_seconds() >= TOLERANCE:  # Stop recording
@@ -141,14 +139,15 @@ def trigert():
                 pass  # discard
     get_user_input()
 
-    print("stop-rec")
-    sr
-    f_name="user_input.wav"
-    se=sr.Recognizer()
-    with sr.AudioFile(f_name) as f:
-        data = se.record(f)
-        text = se.recognize_google(data, language="de-DE", )
-        print(text)
-        # do
-        functions.get_action(text)
-        os.remove("user_input.wav")
+    # Speech to text
+    try:
+        f_name="user_input.wav"
+        se=sr.Recognizer()
+        with sr.AudioFile(f_name) as f:
+            data = se.record(f)
+            text = se.recognize_google(data, language="de-DE", )
+            print(text)
+            # do
+            return(text)
+    except:
+        pass
