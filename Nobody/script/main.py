@@ -2,7 +2,6 @@
 # import
 import nobody
 from do import *
-import set_up
 # start
 # First start
 conf = nobody.get_conf()
