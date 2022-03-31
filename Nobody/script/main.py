@@ -22,5 +22,4 @@ if not conf["nobody"]["set-up"]:
     f.close()
     print("set-up completed")
 # do
-print("bootet")
 nobody.input_processing()

@@ -2,7 +2,7 @@
 # import
 from gtts import gTTS
 from playsound import playsound
-import os, json, do
+import os, json
 import speech_recognition as sr
 import threading
 from array import array
@@ -16,7 +16,8 @@ def say(txt, lang = "conf"):
     if not lang=="conf":
         tts = gTTS(text=txt, lang=lang, slow=False)
     else:
-        f = open("config.json", "r")
+        conf=get_conf()
+        f = open(conf["nobody"]["path"]+"/config.json", "r")
         conf = json.load(f)
         f.flush()
         f.close()
@@ -27,7 +28,7 @@ def say(txt, lang = "conf"):
 
 # get_conf
 def get_conf():
-    with open("config.json", "r") as f:
+    with open("/home/nulli/GroßeArbeit/Coding/Nobody/Nobody/script/config.json", "r") as f:
         config = json.load(f)
     return config
 
@@ -35,10 +36,6 @@ def get_conf():
 def get_lang():
     conf = get_conf()
     return conf["usr"]["lang"]
-
-# input processing
-def input_processing():
-    do.get_action(stt())
 
 # STT
 def stt():
@@ -154,3 +151,4 @@ def stt():
             return(text)
     except:
         pass
+say("hi")

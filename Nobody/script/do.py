@@ -1,6 +1,6 @@
 # import
 from datetime import datetime
-import nobody, json, os
+import nobody, json, os, time
 from os import listdir
 from os.path import isfile, join
 #def
@@ -12,11 +12,13 @@ def get_action(usr_input):
     print("get action")
     try:
         usr_input=usr_input.lower()
-
         # init
         # time
         if contains(usr_input, ["zeit", "uhr", "time", "clock", "spät"]):
             time()
+        #timer
+        if contains(usr_input, ["timer", "stop uhr"]):
+            timer()
         # Hello
         if contains(usr_input, ["hi", "hallo", "hello"]):
             if contains(usr_input, ["geht's"]):
@@ -52,3 +54,13 @@ def get_action(usr_input):
 def time():
     now = datetime.now()
     nobody.say(now.strftime("%H:%M"))
+
+def timer():
+    nobody.say("wie fiele minuten?")
+    input("lol")
+    user_input=nobody.stt()
+    import re
+    now=datetime.now()
+    M=now.strftime("%M")
+    wait=int(M+(int(re.search(r'\d+', user_input).group())))
+    time.sleep(int(re.search(r'\d+', user_input).group()))
