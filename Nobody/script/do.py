@@ -16,9 +16,7 @@ def get_action(usr_input):
         # time
         if contains(usr_input, ["zeit", "uhr", "time", "clock", "spät"]):
             time()
-        #timer
-        if contains(usr_input, ["timer", "stop uhr"]):
-            timer()
+
         # Hello
         if contains(usr_input, ["hi", "hallo", "hello"]):
             if contains(usr_input, ["geht's"]):
@@ -54,13 +52,3 @@ def get_action(usr_input):
 def time():
     now = datetime.now()
     nobody.say(now.strftime("%H:%M"))
-
-def timer():
-    nobody.say("wie fiele minuten?")
-    input("lol")
-    user_input=nobody.stt()
-    import re
-    now=datetime.now()
-    M=now.strftime("%M")
-    wait=int(M+(int(re.search(r'\d+', user_input).group())))
-    time.sleep(int(re.search(r'\d+', user_input).group()))

@@ -28,7 +28,9 @@ def say(txt, lang = "conf"):
 
 # get_conf
 def get_conf():
-    with open("/home/nulli/GroßeArbeit/Coding/Nobody/Nobody/script/config.json", "r") as f:
+    with open("path.json", "r") as f:
+        config = json.load(f)
+    with open(config["path"]+"/config.json", "r") as f:
         config = json.load(f)
     return config
 
@@ -135,10 +137,10 @@ def stt():
                 q.put(array('h', stream.read(CHUNK_SIZE)))
             except Full:
                 pass  # discard
-
-    playsound("Ding.mp3")
+    conf=get_conf()
+    playsound(conf["nobody"]["path"]+"/Ding.mp3")
     get_user_input()
-    playsound("Ding.mp3")
+    playsound(conf["nobody"]["path"]+"/Ding.mp3")
     # Speech to text
     try:
         f_name="user_input.wav"
@@ -151,4 +153,3 @@ def stt():
             return(text)
     except:
         pass
-say("hi")
